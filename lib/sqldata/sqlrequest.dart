@@ -1,0 +1,124 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart' show ByteData, rootBundle;
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
+class SqlRequest{
+  SqlRequest._();
+
+  static SqlRequest _instance = SqlRequest._();
+
+  factory SqlRequest() => _instance;
+
+  late List listDatas;
+
+  late Database database;
+  static late Database db;
+
+  Future init() async{
+    String databasePath = await getDatabasesPath();
+    String path = join(databasePath,"zysjyj.db");
+    print('数据库存储路径path:'+path);
+    //所有的sql语句
+    // CreateTableSqls  sqlTables = CreateTableSqls();
+    //所有的sql语句
+    // Map<String,String> allTableSqls = sqlTables.getAllTables();
+    try {
+      db = await openDatabase(path);
+    } catch (e) {
+      print('CreateTables init Error $e');
+    }
+    //检查需要生成的表
+    // List<String> noCreateTables = await getNoCreateTables(allTableSqls);
+    // print('noCreateTables:'+noCreateTables.toString());
+    // if (noCreateTables.length>0) {
+    //   //创建新表
+    //   // 关闭上面打开的db，否则无法执行open
+    //   db.close();
+    //   db = await openDatabase(
+    //       path,
+    //       version: 1,
+    //       onCreate: (Database db,int version) async{
+    //
+    //         print('db created version is $version');
+    //       },
+    //       onOpen: (Database db)async{
+    //         noCreateTables.forEach((sql) async{
+    //           await db.execute(allTableSqls[sql]);
+    //         });
+    //         print('db补完表已打开');
+    //       });
+    // }else{
+    //   print("表都存在，db已打开");
+    // }
+    List tableMaps = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
+    print('所有表:'+tableMaps.toString());
+    // db.close();
+    // print("db已关闭");
+  }
+
+  static Future<void> copyDatabase() async {
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, 'zysjyj.db');
+
+    // 检查SQLite .db文件是否已复制到设备
+    bool exists = await databaseExists(path);
+
+    if (!exists) {
+      // 如果SQLite .db文件不存在，则复制它
+      try {
+        // 从assets目录复制SQLite .db文件到设备上的合适位置
+        ByteData data = await rootBundle.load('assets/databases/zysjyj.db');
+        List<int> bytes = data.buffer.asUint8List(
+          data.offsetInBytes,
+          data.lengthInBytes,
+        );
+        await File(path).writeAsBytes(bytes);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  // 打开SQLite数据库连接，并执行查询语句
+  Future<void> queryDatabase() async {
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, 'zysjyj.db');
+
+    // 打开SQLite数据库连接
+    db = await openDatabase(path);
+
+    // 执行查询语句
+    // List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM zysjyj');
+
+    // 处理查询结果
+    // ...
+  }
+
+
+  static Future<void> loadDatas() async{
+    // String sql = await rootBundle.loadString('assets/resources/sql/excute.sql');
+    // await _instance.init();
+    await copyDatabase();
+
+    String sql = "select * from zysjyj";
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, 'zysjyj.db');
+
+    // 打开SQLite数据库连接
+
+    try {
+      db = await openDatabase(path);
+      List tableMaps = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
+      print('所有表:'+tableMaps.toString());
+      _instance.listDatas = await db.rawQuery(sql);
+      db.close();
+      print("db已关闭");
+    }catch(e){
+      print("error = $e");
+    }
+
+  }
+
+}
