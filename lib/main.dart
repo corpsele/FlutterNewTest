@@ -69,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: const Text(
             "中药食疗搜",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18,),
+            style: TextStyle(
+              fontSize: 18,
+            ),
           ),
         ),
         // Container(
@@ -149,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  getMainBody(){
+  getMainBody() {
     return ListView.separated(
         itemBuilder: (context, index) {
           // receiveData();
@@ -184,9 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
           return getItems(index);
         },
         separatorBuilder: (context, index) => const Divider(
-          height: 1,
-          color: Colors.black,
-        ),
+              height: 1,
+              color: Colors.black,
+            ),
         itemCount: words.length);
   }
 
@@ -227,19 +229,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onItemClick(int index) {
-    switch (index){
+    switch (index) {
       case 0:
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Medicine(),
-                // Pass the arguments as part of the RouteSettings. The
-                // DetailScreen reads the arguments from these settings.
-                settings: RouteSettings(
-                  arguments: words[index],
-                ),
-              ),
-            );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Medicine(),
+            // Pass the arguments as part of the RouteSettings. The
+            // DetailScreen reads the arguments from these settings.
+            settings: RouteSettings(
+              arguments: words[index],
+            ),
+          ),
+        );
         break;
     }
     // if (Platform.isMacOS) {
@@ -295,16 +297,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   getBodyTest() {
     return Center(
-      child:
-      DataTable2(
+      child: DataTable2(
           columnSpacing: 12,
           horizontalMargin: 12,
           minWidth: 600,
           columns: columnList,
           rows: List<DataRow>.generate(
               100,
-                  (index) =>
-                  DataRow(cells: [
+              (index) => DataRow(cells: [
                     DataCell(Text('A' * (10 - index % 10))),
                     DataCell(Text('B' * (10 - (index + 5) % 10))),
                     DataCell(Text('C' * (15 - (index + 5) % 10))),
@@ -315,45 +315,48 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   getBody() {
-    return
-      Center(
-        child:
-        Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  child: const Text(
-                    "名称",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18,),
+    return Center(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                child: const Text(
+                  "名称",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(12 + 50),
-                  child: const Text(
-                    "归经",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18,),
+              ),
+              Container(
+                padding: const EdgeInsets.all(12 + 50),
+                child: const Text(
+                  "归经",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+          Table(
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              1: FlexColumnWidth(),
+            },
+            border: TableBorder.all(
+              color: Colors.black,
+              width: 1,
             ),
-            Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              columnWidths: const {
-                0: IntrinsicColumnWidth(),
-                1: FlexColumnWidth(
-
-                ),
-              },
-              border: TableBorder.all(color: Colors.black, width: 1,),
-              children: listRow,
-            )
-          ],
-        ),
-      );
+            children: listRow,
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -369,16 +372,13 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body:
-      getMainBody(),
+      body: getMainBody(),
+      resizeToAvoidBottomInset: false,
       // Center(
       //   // Center is a layout widget. It takes a single child and positions it
       //   // in the middle of the parent.

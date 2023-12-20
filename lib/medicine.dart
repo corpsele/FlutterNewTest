@@ -1,21 +1,26 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutternewtest/sqldata/sqlrequest.dart';
+import 'package:flutternewtest/utils/globalutils.dart';
+
+import 'medicinemodel.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Medicine extends StatefulWidget {
-  const Medicine({Key? key}) : super(key: key);
+  // const Medicine({Key? key}) : super(key: key);
+
+  Medicine({super.key}) {
+    GlobalUtils.initDeviceW_H();
+  }
 
   @override
   State<Medicine> createState() => MedicineState();
-
 }
 
 class MedicineState extends State<Medicine> {
-
   List<DataColumn2> columnList = [
     const DataColumn2(
       label: Text('名称'),
@@ -40,32 +45,361 @@ class MedicineState extends State<Medicine> {
     ),
   ];
 
+  TextEditingController textEditingControllerMingCheng =
+      TextEditingController();
+  TextEditingController textEditingControllerGongNeng = TextEditingController();
+  TextEditingController textEditingControllerZhuYi = TextEditingController();
+
+  String strSelectedGuiJing = "";
+  List<String> listGuiJing = ["", "心", "脾", "胃", "肝", "肾", "肠"];
+
+  String strSelectedXingWei = "";
+  List<String> listXingWei = ["", "甘", "寒", "凉", "温", "热", "平"];
+
+  FocusNode focusNode = FocusNode();
+
+  List<MedicineModel>? medicineModelList;
+
+  void hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    SqlRequest.loadDatas();
+    // SqlRequest.loadDatas();
+    // SqlRequest.searchDatasByParams(
+    //     textEditingControllerMingCheng.text,
+    //     textEditingControllerGongNeng.text,
+    //     strSelectedGuiJing,
+    //     strSelectedXingWei,
+    //     textEditingControllerZhuYi.text
+    // );
+    medicineModelList = [];
   }
 
-  getBody(){
+  getBody() {
     return Center(
-      child:
-      DataTable2(
-          columnSpacing: 12,
-          horizontalMargin: 12,
-          minWidth: 600,
-          columns: columnList,
-          rows: List<DataRow>.generate(
-              100,
-                  (index) =>
-                  DataRow(cells: [
-                    DataCell(Text('A' * (10 - index % 10))),
-                    DataCell(Text('B' * (10 - (index + 5) % 10))),
-                    DataCell(Text('C' * (15 - (index + 5) % 10))),
-                    DataCell(Text('D' * (15 - (index + 10) % 10))),
-                    DataCell(Text(((index + 0.1) * 25.4).toString()))
-                  ]))),
+      // child:
+      // Padding(
+      // padding: const EdgeInsets.all(1.0),
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            // maxWidth: GlobalUtils.screenW.toDouble(),
+            // maxHeight: 50,
+            padding: const EdgeInsets.all(0),
+            child: Row(
+              children: [
+                // Container(
+                //   alignment: Alignment.center,
+                //   child:
+                //   Text(
+                //     "名称",
+                //   ),
+                // ),
+                // SizedBox(
+                //   width: 50,
+                //   height: 100,
+                //
+                //   child:
+                //
+                // ),
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: textEditingControllerMingCheng,
+                    decoration: const InputDecoration(
+                        hintText: "名称", border: OutlineInputBorder()),
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child:
+                      // DropdownButton(
+                      //     value: dropDownGuiJing, style: textStyleGuiJing,
+                      //     icon: Icon(Icons.arrow_right), iconSize: 40, iconEnabledColor: Colors.green.withOpacity(0.7),
+                      //     hint: Text('请选择地区'), isExpanded: true, underline: Container(height: 1, color: Colors.green.withOpacity(0.7)),
+                      //     items: [
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('北京'), SizedBox(width: 10), Icon(Icons.ac_unit) ]),
+                      //           value: 1),
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('天津'), SizedBox(width: 10), Icon(Icons.content_paste) ]),
+                      //           value: 2),
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('河北', style: TextStyle(color: Colors.purpleAccent, fontSize: 16)), SizedBox(width: 10), Icon(Icons.send, color: Colors.purpleAccent) ]),
+                      //           value: 3)
+                      //     ],
+                      //     onChanged: (value) {
+                      //       setState((){
+                      //         // dropDownGuiJing = value.toString();
+                      //       });
+                      //     }),
+                      DropdownButton<String>(
+                    value: strSelectedGuiJing,
+                    onChanged: (value) {
+                      setState(() {
+                        strSelectedGuiJing = value.toString();
+                      });
+                    },
+
+                    hint: const Center(
+                      child: Text(
+                        '归经',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    // Hide the default underline
+                    underline: Container(
+                        height: 1, color: Colors.green.withOpacity(0.7)),
+                    // set the color of the dropdown menu
+                    dropdownColor: Colors.white,
+                    icon: const Icon(
+                      Icons.arrow_downward,
+                      color: Colors.black,
+                    ),
+                    isExpanded: true,
+
+                    // The list of options
+                    items: listGuiJing
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  // e == "" ? "归经" : e,
+                                  e,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ))
+                        .toList(),
+
+                    // Customize the selected item
+                    selectedItemBuilder: (BuildContext context) => listGuiJing
+                        .map((e) => Center(
+                              child: Text(
+                                e == "" ? "归经" : e,
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child:
+                      // DropdownButton(
+                      //     value: dropDownGuiJing, style: textStyleGuiJing,
+                      //     icon: Icon(Icons.arrow_right), iconSize: 40, iconEnabledColor: Colors.green.withOpacity(0.7),
+                      //     hint: Text('请选择地区'), isExpanded: true, underline: Container(height: 1, color: Colors.green.withOpacity(0.7)),
+                      //     items: [
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('北京'), SizedBox(width: 10), Icon(Icons.ac_unit) ]),
+                      //           value: 1),
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('天津'), SizedBox(width: 10), Icon(Icons.content_paste) ]),
+                      //           value: 2),
+                      //       DropdownMenuItem(
+                      //           child: Row(children: <Widget>[Text('河北', style: TextStyle(color: Colors.purpleAccent, fontSize: 16)), SizedBox(width: 10), Icon(Icons.send, color: Colors.purpleAccent) ]),
+                      //           value: 3)
+                      //     ],
+                      //     onChanged: (value) {
+                      //       setState((){
+                      //         // dropDownGuiJing = value.toString();
+                      //       });
+                      //     }),
+                      DropdownButton<String>(
+                    value: strSelectedXingWei,
+                    onChanged: (value) {
+                      setState(() {
+                        strSelectedXingWei = value.toString();
+                      });
+                    },
+
+                    hint: const Center(
+                      child: Text(
+                        '性味',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    // Hide the default underline
+                    underline: Container(
+                        height: 1, color: Colors.green.withOpacity(0.7)),
+                    // set the color of the dropdown menu
+                    dropdownColor: Colors.white,
+                    icon: const Icon(
+                      Icons.arrow_downward,
+                      color: Colors.black,
+                    ),
+                    isExpanded: true,
+
+                    // The list of options
+                    items: listXingWei
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  // e == "" ? "归经" : e,
+                                  e,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ))
+                        .toList(),
+
+                    // Customize the selected item
+                    selectedItemBuilder: (BuildContext context) => listGuiJing
+                        .map((e) => Center(
+                              child: Text(
+                                e == "" ? "性味" : e,
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: textEditingControllerGongNeng,
+                    decoration: const InputDecoration(
+                        hintText: "功能", border: OutlineInputBorder()),
+                  ),
+                ),
+
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: textEditingControllerZhuYi,
+                    decoration: const InputDecoration(
+                        hintText: "注意", border: OutlineInputBorder()),
+                    focusNode: focusNode,
+                  ),
+                ),
+
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      hideKeyboard();
+                      SqlRequest.searchDatasByParams(
+                        textEditingControllerMingCheng.text,
+                        textEditingControllerGongNeng.text,
+                        strSelectedGuiJing,
+                        strSelectedXingWei,
+                        textEditingControllerZhuYi.text,
+                      ).then((value) {
+                        setState(() {
+                          medicineModelList = value;
+                        });
+                      });
+                    },
+                    style: const ButtonStyle(
+                      textStyle:
+                          MaterialStatePropertyAll(TextStyle(fontSize: 18)),
+                    ),
+                    child: const Text("搜索"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // SizedBox(
+          //   width: 1,
+          //   height: 100,
+          // ),
+          //   SizedBox(
+          //
+          //     width: 200,
+          //     height: 400,
+          //     child:
+          LimitedBox(
+            maxWidth: GlobalUtils.screenW.toDouble(),
+            maxHeight: GlobalUtils.screenH.toDouble() -
+                50 -
+                MediaQuery.of(context).padding.top -
+                kBottomNavigationBarHeight,
+            child: DataTable2(
+                columnSpacing: 12,
+                horizontalMargin: 12,
+                minWidth: 600,
+                dataRowHeight: 200,
+                columns: columnList,
+                rows: List<DataRow>.generate(medicineModelList?.length ?? 0,
+                    (index) {
+                  return DataRow(cells: [
+                    DataCell(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: AutoSizeText(
+                          medicineModelList?[index].mingCheng ?? "",
+                          maxLines: 100,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: AutoSizeText(
+                            medicineModelList?[index].guiJing ?? ""),
+                      ),
+                    ),
+                    DataCell(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: AutoSizeText(
+                            medicineModelList?[index].xingWei ?? ""),
+                      ),
+                    ),
+                    DataCell(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: AutoSizeText(
+                          medicineModelList?[index].gongNeng ?? "",
+                          maxLines: 100,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child:
+                            AutoSizeText(medicineModelList?[index].zhuYi ?? ""),
+                      ),
+                    ),
+                  ]);
+                })),
+            // ),
+          ),
+        ],
+      ),
+      // ),
     );
   }
 
@@ -73,17 +407,21 @@ class MedicineState extends State<Medicine> {
   Widget build(BuildContext context) {
     final Object title = ModalRoute.of(context)?.settings.arguments ?? Object();
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(title.toString()),
+    return GestureDetector(
+      onTap: hideKeyboard,
+      child: Scaffold(
+        appBar: AppBar(
+          // TRY THIS: Try changing the color here to a specific color (to
+          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+          // change color while the other colors stay the same.
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(title.toString()),
+        ),
+        body: getBody(),
+        resizeToAvoidBottomInset: false,
       ),
-      body: getBody(),
     );
   }
 }

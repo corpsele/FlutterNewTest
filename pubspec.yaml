@@ -50,6 +50,7 @@ dev_dependencies:
   sqflite: ^2.3.0
   scrollable_table_view: ^2.0.3
   data_table_2: ^2.5.9
+  auto_size_text: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
