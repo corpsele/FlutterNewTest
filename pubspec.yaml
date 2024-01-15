@@ -51,6 +51,10 @@ dev_dependencies:
   scrollable_table_view: ^2.0.3
   data_table_2: ^2.5.9
   auto_size_text: ^3.0.0
+  sm_crypto: ^1.0.3
+  oktoast: ^3.4.0
+  flutter_styled_toast: ^2.2.1
+  dart_sm: ^0.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
