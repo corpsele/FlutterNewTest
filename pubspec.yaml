@@ -55,6 +55,8 @@ dev_dependencies:
   oktoast: ^3.4.0
   flutter_styled_toast: ^2.2.1
   dart_sm: ^0.1.4
+  file_picker: ^6.1.1
+  ncmdump: ^0.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

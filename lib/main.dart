@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutternewtest/ncmdump.dart';
 import 'package:flutternewtest/sm4crypt.dart';
 import 'package:scrollable_table_view/scrollable_table_view.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -116,16 +117,44 @@ class _MyHomePageState extends State<MyHomePage> {
         // ),
       ],
     ),
+
+    TableRow(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+          child: const Text(
+            "ncmdump",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+        // Container(
+        //   child: Text(""),
+        // ),
+        // Container(
+        //   padding: const EdgeInsets.fromLTRB(42 + 50, 0, 0, 0),
+        //   child: Text(
+        //     "2",
+        //     // textAlign: TextAlign.center,
+        //     style: TextStyle(fontSize: 18,),
+        //   ),
+        // ),
+      ],
+    ),
   ];
 
   List<String> words = [
     "中药食疗搜",
     "SM4加解密",
+    "ncmdump",
   ];
 
   final menus = <Map>[
     {"id": "0", "name": "中药食疗搜"},
     {"id": "1", "name": "SM4加解密"},
+    {"id": "2", "name": "ncmdump"},
   ];
 
   static const loadingTag = "##loading##";
@@ -287,7 +316,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
         break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NCMDump(),
+            // Pass the arguments as part of the RouteSettings. The
+            // DetailScreen reads the arguments from these settings.
+            settings: RouteSettings(
+              arguments: words[index],
+            ),
+          ),
+        );
+        break;
     }
+
     // if (Platform.isMacOS) {
     //   switch (index){
     //     case 7:
@@ -397,7 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 1,
             ),
             children: listRow,
-          )
+          ),
         ],
       ),
     );
