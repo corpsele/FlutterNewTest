@@ -263,7 +263,7 @@ class MedicineState extends State<Medicine> {
                         .toList(),
 
                     // Customize the selected item
-                    selectedItemBuilder: (BuildContext context) => listGuiJing
+                    selectedItemBuilder: (BuildContext context) => listXingWei
                         .map((e) => Center(
                               child: Text(
                                 e == "" ? "性味" : e,
