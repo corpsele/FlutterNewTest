@@ -51,7 +51,7 @@ class MedicineState extends State<Medicine> {
   TextEditingController textEditingControllerZhuYi = TextEditingController();
 
   String strSelectedGuiJing = "";
-  List<String> listGuiJing = ["", "心", "脾", "胃", "肝", "肾", "肠"];
+  List<String> listGuiJing = ["", "心", "脾", "胃", "肝", "肾", "肠", "肺"];
 
   String strSelectedXingWei = "";
   List<String> listXingWei = ["", "甘", "寒", "凉", "温", "热", "平"];
