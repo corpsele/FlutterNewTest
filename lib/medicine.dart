@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutternewtest/sqldata/sqlrequest.dart';
 import 'package:flutternewtest/utils/globalutils.dart';
@@ -58,7 +59,13 @@ class MedicineState extends State<Medicine> {
 
   FocusNode focusNode = FocusNode();
 
+  int pageSize = 0;
+  int startIndex = 0;
+  int arrayStartIndex = 0;
+  int arrayPageSize = 10;
+
   List<MedicineModel>? medicineModelList;
+  List<MedicineModel>? medicineModelPageList;
 
   void hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
@@ -76,6 +83,216 @@ class MedicineState extends State<Medicine> {
     //     textEditingControllerZhuYi.text
     // );
     medicineModelList = [];
+    medicineModelPageList = [];
+  }
+
+  getTableOrEmpty() {
+    if ((medicineModelPageList?.length ?? 0) < 1) {
+      return const Text(
+        "暂无数据",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 24,
+        ),
+      );
+    } else {
+      if((medicineModelPageList?.length ?? 0) < (medicineModelList?.length ?? 0)){
+        return
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LimitedBox(
+                maxHeight:
+          GlobalUtils.screenH.toDouble() -
+              50 -
+              MediaQuery.of(context).padding.top -
+              kBottomNavigationBarHeight - 60,
+                child:
+                DataTable2(
+                  columnSpacing: 12,
+                  horizontalMargin: 12,
+                  minWidth: 600,
+                  dataRowHeight: 200,
+                  columns: columnList,
+                  rows: getRows(),
+                  // List<DataRow>.generate(medicineModelList?.length ?? 0,
+                  //     (index) {
+                  //   return DataRow(cells: [
+                  //     DataCell(
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.vertical,
+                  //         child: AutoSizeText(
+                  //           medicineModelList?[index].mingCheng ?? "",
+                  //           maxLines: 100,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     DataCell(
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.vertical,
+                  //         child: AutoSizeText(
+                  //             medicineModelList?[index].guiJing ?? ""),
+                  //       ),
+                  //     ),
+                  //     DataCell(
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.vertical,
+                  //         child: AutoSizeText(
+                  //             medicineModelList?[index].xingWei ?? ""),
+                  //       ),
+                  //     ),
+                  //     DataCell(
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.vertical,
+                  //         child: AutoSizeText(
+                  //           medicineModelList?[index].gongNeng ?? "",
+                  //           maxLines: 100,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     DataCell(
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.vertical,
+                  //         child:
+                  //             AutoSizeText(medicineModelList?[index].zhuYi ?? ""),
+                  //       ),
+                  //     ),
+                  //   ]);
+                  // })),
+                ),
+              ),
+
+              LimitedBox(
+                maxHeight: 30,
+                child:
+                ElevatedButton(
+                  onPressed: (){
+                    print("================ (medicineModelPageList?.length ?? 0) + arrayPageSize = ${(medicineModelPageList?.length ?? 0) + arrayPageSize}");
+                    print("================ (medicineModelPageList?.length ?? 0) - 1 = ${(medicineModelPageList?.length ?? 0) - 1}");
+                    print("================ (medicineModelPageList?.length ?? 0) = ${(medicineModelPageList?.length ?? 0)}");
+                    setState(() {
+                      if((medicineModelList?.length ?? 0) > 0){
+                        for(int i = 0; i < arrayPageSize; i++){
+                          if(i < (medicineModelList?.length ?? 0) - 1){
+                            MedicineModel model = medicineModelList?[i] ?? MedicineModel();
+                            medicineModelPageList?.add(model);
+                            medicineModelList?.removeAt(i);
+                          }
+                        }
+                      }
+                    });
+
+                  },
+                  child: const Text("加载跟多"),
+                ),
+              ),
+
+
+
+
+
+            ],
+          );
+
+      }else{
+        return DataTable2(
+          columnSpacing: 12,
+          horizontalMargin: 12,
+          minWidth: 600,
+          dataRowHeight: 200,
+          columns: columnList,
+          rows: getRows(),
+          // List<DataRow>.generate(medicineModelList?.length ?? 0,
+          //     (index) {
+          //   return DataRow(cells: [
+          //     DataCell(
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.vertical,
+          //         child: AutoSizeText(
+          //           medicineModelList?[index].mingCheng ?? "",
+          //           maxLines: 100,
+          //         ),
+          //       ),
+          //     ),
+          //     DataCell(
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.vertical,
+          //         child: AutoSizeText(
+          //             medicineModelList?[index].guiJing ?? ""),
+          //       ),
+          //     ),
+          //     DataCell(
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.vertical,
+          //         child: AutoSizeText(
+          //             medicineModelList?[index].xingWei ?? ""),
+          //       ),
+          //     ),
+          //     DataCell(
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.vertical,
+          //         child: AutoSizeText(
+          //           medicineModelList?[index].gongNeng ?? "",
+          //           maxLines: 100,
+          //         ),
+          //       ),
+          //     ),
+          //     DataCell(
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.vertical,
+          //         child:
+          //             AutoSizeText(medicineModelList?[index].zhuYi ?? ""),
+          //       ),
+          //     ),
+          //   ]);
+          // })),
+        );
+      }
+
+    }
+  }
+
+  getRows() {
+    return List<DataRow>.generate(medicineModelPageList?.length ?? 0, (index) {
+      return DataRow(cells: [
+        DataCell(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AutoSizeText(
+              medicineModelPageList?[index].mingCheng ?? "",
+              maxLines: 100,
+            ),
+          ),
+        ),
+        DataCell(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AutoSizeText(medicineModelPageList?[index].guiJing ?? ""),
+          ),
+        ),
+        DataCell(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AutoSizeText(medicineModelPageList?[index].xingWei ?? ""),
+          ),
+        ),
+        DataCell(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AutoSizeText(
+              medicineModelPageList?[index].gongNeng ?? "",
+              maxLines: 100,
+            ),
+          ),
+        ),
+        DataCell(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AutoSizeText(medicineModelPageList?[index].zhuYi ?? ""),
+          ),
+        ),
+      ]);
+    });
   }
 
   getBody() {
@@ -308,15 +525,27 @@ class MedicineState extends State<Medicine> {
                   child: ElevatedButton(
                     onPressed: () {
                       hideKeyboard();
-                      SqlRequest.searchDatasByParams(
+                      arrayStartIndex = 0;
+                      SqlRequest.searchDatasByParamsLimit(
                         textEditingControllerMingCheng.text,
                         textEditingControllerGongNeng.text,
                         strSelectedGuiJing,
                         strSelectedXingWei,
                         textEditingControllerZhuYi.text,
+                        startIndex,
+                        pageSize,
                       ).then((value) {
                         setState(() {
                           medicineModelList = value;
+                          if((medicineModelList?.length ?? 0) > 0){
+                            for(int i = 0; i < arrayPageSize; i++){
+                              if(i < (medicineModelList?.length ?? 0) - 1){
+                                MedicineModel model = medicineModelList?[i] ?? MedicineModel();
+                                medicineModelPageList?.add(model);
+                                medicineModelList?.removeAt(i);
+                              }
+                            }
+                          }
                         });
                       });
                     },
@@ -345,57 +574,7 @@ class MedicineState extends State<Medicine> {
                 50 -
                 MediaQuery.of(context).padding.top -
                 kBottomNavigationBarHeight,
-            child: DataTable2(
-                columnSpacing: 12,
-                horizontalMargin: 12,
-                minWidth: 600,
-                dataRowHeight: 200,
-                columns: columnList,
-                rows: List<DataRow>.generate(medicineModelList?.length ?? 0,
-                    (index) {
-                  return DataRow(cells: [
-                    DataCell(
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: AutoSizeText(
-                          medicineModelList?[index].mingCheng ?? "",
-                          maxLines: 100,
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: AutoSizeText(
-                            medicineModelList?[index].guiJing ?? ""),
-                      ),
-                    ),
-                    DataCell(
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: AutoSizeText(
-                            medicineModelList?[index].xingWei ?? ""),
-                      ),
-                    ),
-                    DataCell(
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: AutoSizeText(
-                          medicineModelList?[index].gongNeng ?? "",
-                          maxLines: 100,
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child:
-                            AutoSizeText(medicineModelList?[index].zhuYi ?? ""),
-                      ),
-                    ),
-                  ]);
-                })),
-            // ),
+            child: getTableOrEmpty(),
           ),
         ],
       ),

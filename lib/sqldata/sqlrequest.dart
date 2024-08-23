@@ -222,4 +222,124 @@ class SqlRequest {
     }
     return _instance.listDatas;
   }
+
+  static Future<List<MedicineModel>> searchDatasByParamsLimit(String mingCheng, String gongNeng,
+      String guiJing, String xingWei, String zhuYi, int index, int length) async {
+    _instance.listDatas = [];
+    // String sql = await rootBundle.loadString('assets/resources/sql/excute.sql');
+    // await _instance.init();
+    await copyDatabase();
+
+    String sql =
+        "select * from zysjyj where MingCheng like ? or GongNengZZ like ? or GuiJing like ? or XingWei like ? or ZhuYi like ?";
+    // String sql = 'SELECT * FROM my_table WHERE name LIKE ?';
+    // List<Map> maps = await db.rawQuery(sql, ['%' + name + '%']);
+
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, 'zysjyj.db');
+
+    // 打开SQLite数据库连接
+
+    try {
+      db = await openDatabase(path);
+      List tableMaps = await db
+          .rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
+      print('所有表:$tableMaps');
+      mingCheng = mingCheng.isNotEmpty ? '%$mingCheng%' : "";
+      gongNeng = gongNeng.isNotEmpty ? '%$gongNeng%' : "";
+      guiJing = guiJing.isNotEmpty ? '%$guiJing%' : "";
+      xingWei = xingWei.isNotEmpty ? '%$xingWei%' : "";
+      zhuYi = zhuYi.isNotEmpty ? '%$zhuYi%' : "";
+      String strWhere = "";
+      List<String> listWhereArgs = [];
+      if(mingCheng.isNotEmpty){
+        strWhere = "MingCheng like ?";
+        listWhereArgs.add(mingCheng);
+      }
+      if(gongNeng.isNotEmpty){
+        if(strWhere.isNotEmpty){
+          strWhere = "$strWhere and GongNengZZ like ?";
+        }
+        else
+        {
+          strWhere = "GongNengZZ like ?";
+        }
+        listWhereArgs.add(gongNeng);
+      }
+      if(guiJing.isNotEmpty){
+        if(strWhere.isNotEmpty){
+          strWhere = "$strWhere and GuiJing like ?";
+        }
+        else
+        {
+          strWhere = "GuiJing like ?";
+        }
+        listWhereArgs.add(guiJing);
+      }
+      if(xingWei.isNotEmpty){
+        if(strWhere.isNotEmpty){
+          strWhere = "$strWhere and XingWei like ?";
+        }
+        else
+        {
+          strWhere = "XingWei like ?";
+        }
+        listWhereArgs.add(xingWei);
+      }
+      if(zhuYi.isNotEmpty){
+        if(strWhere.isNotEmpty){
+          strWhere = "$strWhere and ZhuYi like ?";
+        }
+        else
+        {
+          strWhere = "ZhuYi like ?";
+        }
+        listWhereArgs.add(zhuYi);
+      }
+      if(index > 0 && length > 0){
+        strWhere = "$strWhere LIMIT $index, $length";
+      }else if(index > 0 && length == 0){
+        strWhere = "$strWhere LIMIT $index, 10";
+      }else if(index == 0 && length > 0){
+        strWhere = "$strWhere LIMIT 0, $length";
+      }
+      // else if(index == 0 && length == 0){
+      //   strWhere = "$strWhere LIMIT 0, 10";
+      // }
+      List<Map<String, Object?>> listData = [];
+      if(strWhere.isEmpty || listWhereArgs.isEmpty){
+        listData = await db.query(
+          "zysjyj",
+          distinct: false,
+          columns: ["MingCheng", "GongNengZZ", "GuiJing", "XingWei", "ZhuYi"],
+        );
+      }else{
+        listData = await db.query(
+          "zysjyj",
+          distinct: false,
+          columns: ["MingCheng", "GongNengZZ", "GuiJing", "XingWei", "ZhuYi"],
+          where:
+          strWhere,
+          whereArgs: listWhereArgs,
+        );
+      }
+
+      // List listData = await db.rawQuery(sql, [mingCheng, '%$gongNeng%', '%$guiJing%', '%$xingWei%', '%$zhuYi%']);
+      print("listData length = ${listData.length}");
+
+      _instance.listDatas = await MedicineModel.fromList(listData);
+      // if(listData.isNotEmpty){
+      //   listData.map((json) {
+      //     print("map json = $json");
+      //     MedicineModel model = MedicineModel.fromJson(json);
+      //     _instance.listDatas.add(model);
+      //   });
+      // }
+      db.close();
+      print("db已关闭");
+    } catch (e) {
+      print("error = $e");
+    }
+    return _instance.listDatas;
+  }
 }
