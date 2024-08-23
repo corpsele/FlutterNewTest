@@ -536,6 +536,7 @@ class MedicineState extends State<Medicine> {
                         pageSize,
                       ).then((value) {
                         setState(() {
+                          medicineModelPageList = [];
                           medicineModelList = value;
                           if((medicineModelList?.length ?? 0) > 0){
                             for(int i = 0; i < arrayPageSize; i++){
