@@ -57,6 +57,8 @@ dev_dependencies:
   dart_sm: ^0.1.4
   file_picker: ^6.1.1
   ncmdump: ^0.0.3
+  win32: ^5.2.0 #flutter3160
+#  win32: ^5.15.0 #flutter3386
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

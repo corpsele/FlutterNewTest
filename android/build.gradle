@@ -1,6 +1,33 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.10'
+    ext {
+        agp_version = '8.1.1'
+    }
     repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://jitpack.io"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://chaquo.com/maven"
+        }
         google()
         mavenCentral()
     }
@@ -12,6 +39,30 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://jitpack.io"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://chaquo.com/maven"
+        }
         google()
         mavenCentral()
     }

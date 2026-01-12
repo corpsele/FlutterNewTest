@@ -11,6 +11,30 @@ pluginManagement {
     includeBuild("${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle")
 
     repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://jitpack.io"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "https://chaquo.com/maven"
+        }
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -23,7 +47,7 @@ pluginManagement {
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "7.3.0" apply false
+    id "com.android.application" version "8.1.1" apply false
 }
 
 include ":app"
