@@ -7,6 +7,8 @@ import 'package:data_table_2/data_table_2.dart';
 
 import 'medicine.dart';
 
+import 'navtive_message_channel.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -212,6 +214,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   getMainBody() {
+    DeviceNameApi().getDeviceName().then((value) {
+       print(value);
+    });
+
     return ListView.separated(
         itemBuilder: (context, index) {
           // receiveData();
