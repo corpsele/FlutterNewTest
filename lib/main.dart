@@ -218,6 +218,24 @@ class _MyHomePageState extends State<MyHomePage> {
        print(value);
     });
 
+    CounterStream().counter().listen((v) {
+      print('收到计数：$v');
+    });
+
+    final echo = EchoChannel();
+
+// 设置原生 -> Dart 的处理
+    echo.setMessageHandler((msg) async {
+      print('收到来自 iOS 的消息：$msg');
+      return "Dart 已收到：$msg";
+    });
+
+// Dart -> iOS
+    echo.send('你好，iOS').then((reply) {
+      print('iOS 回复：$reply');
+    });
+
+
     return ListView.separated(
         itemBuilder: (context, index) {
           // receiveData();
