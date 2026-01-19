@@ -19,10 +19,12 @@ import Flutter
           }
           
           let messageChannel = FlutterBasicMessageChannel(name: "com.flutter.api/echo", binaryMessenger: vc.binaryMessenger, codec: FlutterStringCodec.sharedInstance())
-          messageChannel.setMessageHandler { message, reply in
+          messageChannel.setMessageHandler {[weak self] message, reply in
               let msg = message as? String ?? ""
               print("收到来自 Dart 的消息：\(msg)")
               reply("iOS 已收到：\(msg)")  // 回复给 Dart
+              let vc = ApplePayVC()
+              self?.window.rootViewController?.present(vc, animated: true)
           }
           
           let name = UIDevice.current.name

@@ -16,6 +16,15 @@ class DeviceNameApi {
       rethrow;
     }
   }
+
+  Future<String> getPlatformVersion() async {
+    try{
+      final result = await _channel.invokeMethod("getPlatformVersion");
+      return result as String;
+    }catch(e){
+      rethrow;
+    }
+  }
 }
 
 // event

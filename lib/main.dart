@@ -8,6 +8,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'medicine.dart';
 
 import 'navtive_message_channel.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MyApp());
@@ -151,12 +152,15 @@ class _MyHomePageState extends State<MyHomePage> {
     "中药食疗搜",
     "SM4加解密",
     "ncmdump",
+    Platform.isIOS ? "apple pay" : "",
   ];
+
 
   final menus = <Map>[
     {"id": "0", "name": "中药食疗搜"},
     {"id": "1", "name": "SM4加解密"},
     {"id": "2", "name": "ncmdump"},
+    Platform.isIOS ? {"id": "3", "name": "apple pay"} : {},
   ];
 
   static const loadingTag = "##loading##";
@@ -218,22 +222,26 @@ class _MyHomePageState extends State<MyHomePage> {
        print(value);
     });
 
+    DeviceNameApi().getPlatformVersion().then((value) {
+      print("getPlatformVersion = $value");
+    });
+
     CounterStream().counter().listen((v) {
       print('收到计数：$v');
     });
 
-    final echo = EchoChannel();
-
-// 设置原生 -> Dart 的处理
-    echo.setMessageHandler((msg) async {
-      print('收到来自 iOS 的消息：$msg');
-      return "Dart 已收到：$msg";
-    });
-
-// Dart -> iOS
-    echo.send('你好，iOS').then((reply) {
-      print('iOS 回复：$reply');
-    });
+//     final echo = EchoChannel();
+//
+// // 设置原生 -> Dart 的处理
+//     echo.setMessageHandler((msg) async {
+//       print('收到来自 iOS 的消息：$msg');
+//       return "Dart 已收到：$msg";
+//     });
+//
+// // Dart -> iOS
+//     echo.send('你好，iOS').then((reply) {
+//       print('iOS 回复：$reply');
+//     });
 
 
     return ListView.separated(
@@ -352,6 +360,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         );
+        break;
+      case 3:
+        final echo = EchoChannel();
+
+// 设置原生 -> Dart 的处理
+        echo.setMessageHandler((msg) async {
+          print('收到来自 iOS 的消息：$msg');
+          return "Dart 已收到：$msg";
+        });
+
+// Dart -> iOS
+        echo.send('你好，iOS').then((reply) {
+          print('iOS 回复：$reply');
+        });
         break;
     }
 

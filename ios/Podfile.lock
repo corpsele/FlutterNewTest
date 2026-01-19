@@ -1,4 +1,5 @@
 PODS:
+  - ApplePayStubs (0.2)
   - DKImagePickerController/Core (4.3.9):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -46,12 +47,14 @@ PODS:
   - SwiftyGif (5.4.5)
 
 DEPENDENCIES:
+  - ApplePayStubs
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
   trunk:
+    - ApplePayStubs
     - DKImagePickerController
     - DKPhotoGallery
     - FMDB
@@ -67,6 +70,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  ApplePayStubs: 5dd63c36527d1117b2045939fb5b6581b4815433
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
   file_picker: 07c75322ede1d47ec9bb4ac82b27c94d3598251a
@@ -76,6 +80,6 @@ SPEC CHECKSUMS:
   sqflite: 5b24d06a453c198c13b305ceea4b4286cc07cfe4
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
 
-PODFILE CHECKSUM: 4f1c12611da7338d21589c0b2ecd6bd20b109694
+PODFILE CHECKSUM: 791ec9b900d9d0600de629cf4d25e8beb06c3334
 
 COCOAPODS: 1.16.2
