@@ -18,7 +18,7 @@ class ApplePayVC: UIViewController {
     private var paymentController: PKPaymentAuthorizationController?
     
     // 配置信息：请修改为你自己的配置
-    private let merchantID = "merchant.com.yourcompany.app" // 必须与 Apple Developer 后台创建的一致
+    private let merchantID = "merchant.com.eport.flutternewtest" // 必须与 Apple Developer 后台创建的一致
     private let countryCode = "CN" // 国家代码
     private let currencyCode = "CNY" // 货币代码
     
@@ -101,6 +101,7 @@ class ApplePayVC: UIViewController {
         
         // 9. 展示 Apple Pay 界面
         paymentController?.present(completion: nil)
+        
     }
 }
 

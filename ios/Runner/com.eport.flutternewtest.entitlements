@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Apple Pay Merchant IDs -->
+    <key>com.apple.developer.in-app-payments</key>
+    <array>
+        <string>merchant.com.eport.flutternewtest</string>
+    </array>
+
+    <!-- Wallet/Pass 的 Pass Type IDs（可选，仅在需要 Pass/Wallet 时加这一段） -->
+    <key>com.apple.developer.pass-type-identifiers</key>
+    <array>
+        <string>pass.com.eport.pass1</string>
+        <!-- 多个 Pass Type ID 依次添加 -->
+    </array>
+</dict>
+</plist>
+
