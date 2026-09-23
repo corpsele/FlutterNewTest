@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutternewtest/ncmdump.dart';
 import 'package:flutternewtest/sm4crypt.dart';
+import 'package:flutternewtest/utils/bluetooth_manager.dart';
 import 'package:scrollable_table_view/scrollable_table_view.dart';
 import 'package:data_table_2/data_table_2.dart';
 
@@ -9,6 +10,7 @@ import 'medicine.dart';
 
 import 'navtive_message_channel.dart';
 import 'dart:io';
+import 'package:flutternewtest/pages/drawer/menu_drawer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,6 +70,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late BluetoothManager bthManager;
   List<TableRow> listRow = [
     TableRow(
       children: [
@@ -227,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     CounterStream().counter().listen((v) {
-      print('收到计数：$v');
+      // print('收到计数：$v');
     });
 
 //     final echo = EchoChannel();
@@ -492,6 +495,45 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _showGoToSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('需要蓝牙权限'),
+        content: Text('请在系统设置 > 隐私与安全性 > 蓝牙 中，为本应用开启蓝牙权限。'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              bthManager.bluetooth.openBluetoothSettings();
+            },
+            child: Text('去设置'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('取消'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    bthManager = BluetoothManager();
+    bthManager.init().then((flag) {
+      if (flag) {
+        bthManager.startScan();
+      } else {
+        _showGoToSettingsDialog();
+      }
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -500,53 +542,54 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     // TRY THIS: Try changing the color here to a specific color (to
+    //     // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+    //     // change color while the other colors stay the same.
+    //     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    //     // Here we take the value from the MyHomePage object that was created by
+    //     // the App.build method, and use it to set our appbar title.
+    //     title: Text(widget.title),
 
-      ),
-      body: getMainBody(),
-      resizeToAvoidBottomInset: false,
-      // Center(
-      //   // Center is a layout widget. It takes a single child and positions it
-      //   // in the middle of the parent.
-      //   child: Column(
-      //     // Column is also a layout widget. It takes a list of children and
-      //     // arranges them vertically. By default, it sizes itself to fit its
-      //     // children horizontally, and tries to be as tall as its parent.
-      //     //
-      //     // Column has various properties to control how it sizes itself and
-      //     // how it positions its children. Here we use mainAxisAlignment to
-      //     // center the children vertically; the main axis here is the vertical
-      //     // axis because Columns are vertical (the cross axis would be
-      //     // horizontal).
-      //     //
-      //     // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-      //     // action in the IDE, or press "p" in the console), to see the
-      //     // wireframe for each widget.
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       const Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //       Text(
-      //         '$_counter',
-      //         style: Theme.of(context).textTheme.headlineMedium,
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    //   ),
+    //   body: getMainBody(),
+    //   resizeToAvoidBottomInset: false,
+    //   // Center(
+    //   //   // Center is a layout widget. It takes a single child and positions it
+    //   //   // in the middle of the parent.
+    //   //   child: Column(
+    //   //     // Column is also a layout widget. It takes a list of children and
+    //   //     // arranges them vertically. By default, it sizes itself to fit its
+    //   //     // children horizontally, and tries to be as tall as its parent.
+    //   //     //
+    //   //     // Column has various properties to control how it sizes itself and
+    //   //     // how it positions its children. Here we use mainAxisAlignment to
+    //   //     // center the children vertically; the main axis here is the vertical
+    //   //     // axis because Columns are vertical (the cross axis would be
+    //   //     // horizontal).
+    //   //     //
+    //   //     // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+    //   //     // action in the IDE, or press "p" in the console), to see the
+    //   //     // wireframe for each widget.
+    //   //     mainAxisAlignment: MainAxisAlignment.center,
+    //   //     children: <Widget>[
+    //   //       const Text(
+    //   //         'You have pushed the button this many times:',
+    //   //       ),
+    //   //       Text(
+    //   //         '$_counter',
+    //   //         style: Theme.of(context).textTheme.headlineMedium,
+    //   //       ),
+    //   //     ],
+    //   //   ),
+    //   // ),
+    //   // floatingActionButton: FloatingActionButton(
+    //   //   onPressed: _incrementCounter,
+    //   //   tooltip: 'Increment',
+    //   //   child: const Icon(Icons.add),
+    //   // ), // This trailing comma makes auto-formatting nicer for build methods.
+    // );
+    return PageBuild.getSliderDrawer(getMainBody(), "选择菜单");
   }
 }

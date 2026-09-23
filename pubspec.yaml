@@ -36,16 +36,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
   flutter_screenutil: ^5.9.0
   sqflite: ^2.3.0
   scrollable_table_view: ^2.0.3
@@ -59,6 +49,51 @@ dev_dependencies:
   ncmdump: ^0.0.3
 #  win32: ^5.2.0 #flutter3160
   win32: ^5.15.0 #flutter3386
+  flutter_bluetooth_plugin: ^2.0.0
+  # flutter_bluetooth_classic_serial: ^1.3.2
+  # flutter_bluetooth_classic_serial: ^1.0.1
+  flutter_classic_bluetooth: ^1.1.0
+  process_run: ^1.3.5
+  flutter_sliding_drawer: ^2.0.0
+
+  # -- 路由（URL深链 登录重定向 Tab保活）
+  go_router: ^18.0.1
+
+  # -- 状态管理 (ViewModel核心)
+  flutter_riverpod: ^3.4.3
+  riverpod_annotation: ^4.0.7
+
+  # -- 依赖注入 
+  get_it: ^9.2.1
+
+  # -- 本地存储
+  get_storage: ^2.1.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.6
+
+  # -- 网络
+  dio: ^5.11.1
+
+  # -- JSON序列化 (Hive适配器 + JSON编解码)
+  json_annotation: ^4.12.0
+  freezed_annotation: ^3.1.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.13
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  lint: ^2.14.0
+  mockito: ^5.4.4
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

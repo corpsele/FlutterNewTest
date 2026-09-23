@@ -28,5 +28,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>本应用需要蓝牙权限以扫描和连接蓝牙设备</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>本应用需要连接蓝牙串口设备</string>
+	<key>com.apple.security.device.bluetooth</key>
+	<true />
 </dict>
 </plist>

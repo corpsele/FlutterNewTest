@@ -49,3 +49,4 @@ macos/Build/
 macos/DerivedData/
 macos/Runner.xcworkspace/xcshareddata
 macos/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+.vscode/
